@@ -29,12 +29,14 @@ class StockX:
         self.URL = GoogleSearch(self.params).get_dict()['organic_results'][0]['link']
         self.Name = self.URL.split('https://stockx.com/')
         self.Name = self.Name[1].replace('-',' ').capitalize()
+        self.web_scraper()
         
     def web_scraper(self):
         #scrape webdata for stockX using URL
         page = requests.get(self.URL, headers=self.headers)
         soup = BeautifulSoup(page.content, "html.parser")
         self.rawData = soup.find('div', class_='chakra-container css-vp2g1e')
+        self.clean_data()
 
     def clean_data(self):
         #clean data to retrieve shoe sizes and price
@@ -47,6 +49,7 @@ class StockX:
                 self.description.append(result[x])
             if 'price:' in result[x]:
                 self.price.append(result[x])
+        self.create_df()
         
     def create_df(self):
         #store sneaker price and size data into dataframe
@@ -57,9 +60,6 @@ class StockX:
 
     def main(self):
         self.web_search()
-        self.web_scraper()
-        self.clean_data()
-        self.create_df()
         print(self.Name)
         print(self.df)
     
