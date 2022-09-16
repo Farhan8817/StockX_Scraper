@@ -62,6 +62,7 @@ class StockX:
         self.web_search()
         print(self.Name)
         print(self.df)
-    
-A = StockX()
-A.main()
+
+if __name__ == "__main__":
+    A = StockX()
+    A.main()
